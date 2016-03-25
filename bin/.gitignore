@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 /Library.class
 /LibraryTest.class
 /spring-MVC.xml
+=======
+/Library.class
+/LibraryTest.class
+/spring-MVC.xml
+>>>>>>> branch 'master' of https://github.com/zhpebox/gradle.git
