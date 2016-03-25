@@ -1,19 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app id="WebApp_ID" version="3.0"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
-	
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>favspringmvcrestful</display-name>
+
+<!--问题 ： applicationContext.xml找不到！
+问题主要由于加载spring的默认配置文件位置一般是在/WEB-INF/下找applicationContext.xml文件。
+而Myeclipse文件自动生成的applicationContext文件是放在/WEB-INF/classes/applicationContext.xml。
+所以在默认加载中是找不到applicationContext.xml文件的，必须加入上面配置。 -->
+<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring-MVC.xml</param-value>
+	</context-param>
+
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+	<!-- 其实可能是你的jar文件没有同步发布到自己项目的lib目录中(如果你是用Maven进行构建的话) 可以试试 下面的办法 项目点击右键 
+	点击 Properties 选择Deployment Assembly 再点击右边的Add按钮 选择Java Build Path Entries后点击Next按钮 
+	然后选择你的Maven Dependencies 确定即可 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
 	<servlet>
 		<servlet-name>springMVC</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-	  	<!-- <init-param>
-	  		<param-name>contextConfigLocation</param-name>
-	  		<param-value>classpath*:*/springMVC-*.xml</param-value>
-	  	</init-param> -->
+	  	<init-param>
+ 	  		<param-name>contextConfigLocation</param-name>
+	  		<param-value>classpath:spring-MVC.xml</param-value>
+ 	  	</init-param> 
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
@@ -22,5 +53,4 @@
 		<url-pattern>/</url-pattern>
 		<!-- 这里一定要写成这样，如果写成 /* 输入地址总是No mapping found for HTTP request with URI -->
 	</servlet-mapping>
-	
 </web-app>
